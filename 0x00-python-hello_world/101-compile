@@ -1,0 +1,23 @@
+#!/bin/bash
+
+# Check if $PYFILE is set
+if [ -z "$PYFILE" ]; then
+  echo "Error: Environment variable \$PYFILE is not set."
+  exit 1
+fi
+
+# Check if the specified Python file exists
+if [ ! -f "$PYFILE" ]; then
+  echo "Error: Python file '$PYFILE' not found."
+  exit 1
+fi
+
+# Compile the Python script
+python -m py_compile "$PYFILE"
+
+# Rename the compiled file to have a 'c' suffix
+compiled_file="${PYFILE}c"
+mv "__pycache__/${PYFILE%.py}.$(python3-config --extension-suffix)" "$compiled_file"
+
+echo "Compiled Python script: $compiled_file"
+
